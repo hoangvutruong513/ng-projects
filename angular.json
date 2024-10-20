@@ -16,7 +16,9 @@
             "outputPath": "dist/first-app",
             "index": "projects/first-app/src/index.html",
             "browser": "projects/first-app/src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "projects/first-app/tsconfig.app.json",
             "assets": [
               {
@@ -24,7 +26,9 @@
                 "input": "projects/first-app/public"
               }
             ],
-            "styles": ["projects/first-app/src/styles.css"],
+            "styles": [
+              "projects/first-app/src/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -69,7 +73,10 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "projects/first-app/tsconfig.spec.json",
             "assets": [
               {
@@ -77,11 +84,28 @@
                 "input": "projects/first-app/public"
               }
             ],
-            "styles": ["projects/first-app/src/styles.css"],
+            "styles": [
+              "projects/first-app/src/styles.css"
+            ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/first-app/**/*.ts",
+              "projects/first-app/**/*.html"
+            ],
+            "eslintConfig": "projects/first-app/eslint.config.js"
           }
         }
       }
     }
+  },
+  "cli": {
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }
