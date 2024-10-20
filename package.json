@@ -44,14 +44,5 @@
     "prettier": "3.3.3",
     "typescript": "~5.5.2",
     "typescript-eslint": "8.10.0"
-  },
-  "lint-staged": {
-    "*.{js,ts,html}": [
-      "eslint",
-      "prettier --check"
-    ],
-    "*.{css,json,md}": [
-      "prettier --check"
-    ]
   }
 }

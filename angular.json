@@ -5,7 +5,13 @@
   "projects": {
     "first-app": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css",
+          "changeDetection": "OnPush",
+          "standalone": true
+        }
+      },
       "root": "projects/first-app",
       "sourceRoot": "projects/first-app/src",
       "prefix": "app",
