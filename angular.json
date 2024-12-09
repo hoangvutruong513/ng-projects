@@ -4,21 +4,18 @@
   "newProjectRoot": "projects",
   "schematics": {
     "@schematics/angular:application": {
-      "standalone": true,
-      "style": "css"
-    },
-    "@schematics/angular:library": {
-      "standalone": true
+      "style": "css",
+      "inlineStyle": true
     },
     "@schematics/angular:component": {
       "changeDetection": "OnPush",
-      "standalone": true,
-      "style": "css"
+      "style": "css",
+      "inlineStyle": true
     }
   },
-  "projects": {
-  },
+  "projects": {},
   "cli": {
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": ["angular-eslint"],
+    "analytics": false
   }
 }
