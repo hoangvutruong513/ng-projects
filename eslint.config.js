@@ -1,5 +1,5 @@
 // @ts-check
-const eslint = require("./node_modules/@eslint/js");
+const eslint = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
 const eslintConfigPrettier = require("eslint-config-prettier");
