@@ -35,7 +35,10 @@
                 "input": "projects/test-ng-19/public"
               }
             ],
-            "styles": ["projects/test-ng-19/src/styles.css"],
+            "styles": [
+              "projects/test-ng-19/src/custom-theme.scss",
+              "projects/test-ng-19/src/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {
