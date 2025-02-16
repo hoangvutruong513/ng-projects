@@ -3,10 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "schematics": {
-    "@schematics/angular:application": {
-      "style": "css",
-      "inlineStyle": true
-    },
+    "@schematics/angular:application": { "style": "css", "inlineStyle": true },
     "@schematics/angular:component": {
       "changeDetection": "OnPush",
       "style": "css",
@@ -30,10 +27,7 @@
             "polyfills": ["zone.js"],
             "tsConfig": "projects/test-ng-19/tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/test-ng-19/public"
-              }
+              { "glob": "**/*", "input": "projects/test-ng-19/public" }
             ],
             "styles": [
               "projects/test-ng-19/src/custom-theme.scss",
@@ -68,12 +62,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "production": {
-              "buildTarget": "test-ng-19:build:production"
-            },
-            "development": {
-              "buildTarget": "test-ng-19:build:development"
-            }
+            "production": { "buildTarget": "test-ng-19:build:production" },
+            "development": { "buildTarget": "test-ng-19:build:development" }
           },
           "defaultConfiguration": "development"
         },
@@ -86,10 +76,7 @@
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/test-ng-19/tsconfig.spec.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/test-ng-19/public"
-              }
+              { "glob": "**/*", "input": "projects/test-ng-19/public" }
             ],
             "styles": ["projects/test-ng-19/src/styles.css"],
             "scripts": []
@@ -108,8 +95,5 @@
       }
     }
   },
-  "cli": {
-    "schematicCollections": ["angular-eslint"],
-    "analytics": false
-  }
+  "cli": { "schematicCollections": ["angular-eslint"], "analytics": false }
 }
