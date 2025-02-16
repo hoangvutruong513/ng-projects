@@ -7,9 +7,7 @@ import unusedImports from "eslint-plugin-unused-imports";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  {
-    ignores: [".angular/", "dist/"],
-  },
+  { ignores: [".angular/", "dist/"] },
   {
     languageOptions: {
       parserOptions: {
@@ -30,6 +28,14 @@ export default tseslint.config(
     rules: {
       "@angular-eslint/prefer-standalone": "error",
       "@angular-eslint/prefer-on-push-component-change-detection": "error",
+      "@angular-eslint/prefer-signals": [
+        "error",
+        {
+          preferReadonlySignalProperties: false,
+          preferInputSignals: true,
+          preferQuerySignals: true,
+        },
+      ],
       "@angular-eslint/no-async-lifecycle-method": "error",
       "@angular-eslint/no-conflicting-lifecycle": "error",
       "@angular-eslint/no-duplicates-in-metadata-arrays": "error",
