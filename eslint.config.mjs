@@ -40,6 +40,12 @@ export default tseslint.config(
       "@angular-eslint/no-conflicting-lifecycle": "error",
       "@angular-eslint/no-duplicates-in-metadata-arrays": "error",
       "@angular-eslint/no-lifecycle-call": "error",
+      "@typescript-eslint/no-extraneous-class": [
+        "error",
+        {
+          allowWithDecorator: true,
+        },
+      ],
     },
   },
   {
