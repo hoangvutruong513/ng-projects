@@ -3,35 +3,19 @@
   "version": 1,
   "newProjectRoot": "projects",
   "schematics": {
-    "@schematics/angular:application": { "style": "css", "inlineStyle": true },
+    "@schematics/angular:application": {
+      "style": "css",
+      "inlineStyle": true
+    },
     "@schematics/angular:component": {
       "changeDetection": "OnPush",
       "style": "css",
-      "inlineStyle": true,
-      "type": "component"
-    },
-    "@schematics/angular:directive": {
-      "type": "directive"
-    },
-    "@schematics/angular:service": {
-      "type": "service"
-    },
-    "@schematics/angular:guard": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:interceptor": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:module": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:pipe": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:resolver": {
-      "typeSeparator": "."
+      "inlineStyle": true
     }
   },
   "projects": {},
-  "cli": { "schematicCollections": ["angular-eslint"], "analytics": false }
+  "cli": {
+    "schematicCollections": ["angular-eslint"],
+    "analytics": false
+  }
 }

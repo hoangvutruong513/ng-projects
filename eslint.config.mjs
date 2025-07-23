@@ -28,23 +28,32 @@ export default tseslint.config(
     rules: {
       "@angular-eslint/prefer-standalone": "error",
       "@angular-eslint/prefer-on-push-component-change-detection": "error",
+      "@angular-eslint/prefer-inject": "error",
       "@angular-eslint/prefer-signals": [
         "error",
         {
-          preferReadonlySignalProperties: false,
+          preferReadonlySignalProperties: true,
           preferInputSignals: true,
           preferQuerySignals: true,
         },
       ],
       "@angular-eslint/no-async-lifecycle-method": "error",
       "@angular-eslint/no-conflicting-lifecycle": "error",
-      "@angular-eslint/no-duplicates-in-metadata-arrays": "error",
       "@angular-eslint/no-lifecycle-call": "error",
+      "@angular-eslint/no-empty-lifecycle-method": "error",
+      "@angular-eslint/no-duplicates-in-metadata-arrays": "error",
+      "@angular-eslint/no-ouput-native": "error",
+      "@angular-eslint/sort-keys-in-type-decorator": "error",
+      "@angular-eslint/sort-lifecycle-methods": "error",
       "@typescript-eslint/no-extraneous-class": [
         "error",
         {
           allowWithDecorator: true,
         },
+      ],
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        { allowNumber: true },
       ],
     },
   },
@@ -79,6 +88,11 @@ export default tseslint.config(
       "@angular-eslint/template/prefer-self-closing-tags": "error",
       "@angular-eslint/template/prefer-control-flow": "error",
       "@angular-eslint/template/no-interpolation-in-attributes": "error",
+      "@angular-eslint/template/attributes-order": "error",
+      "@angular-eslint/template/eqeqeq": [
+        "error",
+        { allowNullOrUndefined: true },
+      ],
     },
   },
   eslintConfigPrettier,
