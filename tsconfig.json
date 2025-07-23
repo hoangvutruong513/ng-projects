@@ -23,5 +23,12 @@
     "strictTemplates": true
   },
   "files": [],
-  "references": []
+  "references": [
+    {
+      "path": "./projects/test-ng20-ssr/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/test-ng20-ssr/tsconfig.spec.json"
+    }
+  ]
 }

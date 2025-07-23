@@ -42,7 +42,7 @@ export default tseslint.config(
       "@angular-eslint/no-lifecycle-call": "error",
       "@angular-eslint/no-empty-lifecycle-method": "error",
       "@angular-eslint/no-duplicates-in-metadata-arrays": "error",
-      "@angular-eslint/no-ouput-native": "error",
+      "@angular-eslint/no-output-native": "error",
       "@angular-eslint/sort-keys-in-type-decorator": "error",
       "@angular-eslint/sort-lifecycle-methods": "error",
       "@typescript-eslint/no-extraneous-class": [
