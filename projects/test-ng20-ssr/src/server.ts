@@ -24,6 +24,11 @@ const angularApp = new AngularNodeAppEngine();
  * });
  * ```
  */
+app.get('/api/hello', async (req, res) => {
+  const fetchPokemon = await fetch('https://pokeapi.co/api/v2/pokemon/1');
+  const pokemon = (await fetchPokemon.json()) as unknown;
+  res.json(pokemon);
+});
 
 /**
  * Serve static files from /browser
