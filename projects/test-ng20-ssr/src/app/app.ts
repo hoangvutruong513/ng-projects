@@ -1,59 +1,60 @@
-import { DatePipe, isPlatformServer } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
-  makeStateKey,
-  PLATFORM_ID,
   signal,
-  TransferState,
 } from '@angular/core';
-import { signalState } from '@ngrx/signals';
+import { RouterOutlet } from '@angular/router';
 import {
-  dehydrate,
-  DehydratedState,
-  hydrate,
-  injectQuery,
-  QueryClient,
-} from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
+  getState,
+  patchState,
+  signalStore,
+  signalStoreFeature,
+  withComputed,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 
 export const delayAsync = (ms: number) => {
   return new Promise((res) => setTimeout(res, ms));
 };
 
-const stateKey = makeStateKey<DehydratedState>('tsquery');
+const withPerson = () =>
+  signalStoreFeature(
+    withState({
+      name: 'vu',
+      age: 10,
+      test: signal('test'),
+    }),
+    withComputed((store) => ({
+      isAdult: computed(() => store.age() >= 18),
+    })),
+    withMethods((store) => ({
+      setAge: (age: number) => {
+        patchState(store, { age });
+      },
+    })),
+  );
 
-// const withPerson = () =>
-//   signalStoreFeature(
-//     withState({
-//       name: 'vu',
-//       age: 10,
-//     }),
-//     withComputed((store) => ({
-//       isAdult: computed(() => store.age() >= 18),
-//     })),
-//     withMethods((store) => ({
-//       setAge: (age: number) => {
-//         patchState(store, { age });
-//       },
-//     })),
-//   );
-
-// const PersonStore = signalStore(withPerson());
-
-// type A = InstanceType<typeof PersonStore>;
-// type B = ReturnType<typeof withPerson>;
-// type C = ReturnType<B>;
-
-// type D = C['stateSignals'];
+const PersonStore = signalStore({ protectedState: false }, withPerson());
+const RecordStore = signalStore(
+  withState({ test: {} as Record<string, string> }),
+  withMethods((store) => ({
+    setTest: (newTest: Record<string, string>) => {
+      patchState(store, (state) => ({
+        test: { ...state.test, ...newTest },
+      }));
+    },
+  })),
+);
 
 @Component({
   selector: 'app-root',
-  imports: [DatePipe],
+  imports: [DatePipe, RouterOutlet],
   template: `
     <div class="bg-amber-500 text-black">
       {{ title() }}
@@ -65,57 +66,36 @@ const stateKey = makeStateKey<DehydratedState>('tsquery');
     >
       Click
     </button>
-    <section
-      class="rounded-md border-2 border-amber-500 bg-green-400 p-2 text-2xl text-black"
+    <button
+      class="cursor-pointer rounded-xl bg-green-400 p-4"
+      (click)="clicker2()"
     >
-      <!-- <div class="text-base text-gray-500">
-        {{ pokeResource.value()?.name }}
-      </div> -->
-      <div class="text-base text-violet-500">{{ pokeQuery.data()?.name }}</div>
-    </section>
+      Click2
+    </button>
+    <button
+      class="cursor-pointer rounded-xl bg-green-400 p-4"
+      (click)="clicker3()"
+    >
+      Click3
+    </button>
     <div>{{ getTime() | date: 'medium' }}</div>
+    <section class="border-2 border-purple-400 bg-blue-600 text-white">
+      <router-outlet />
+    </section>
   `,
-  // providers: [PersonStore],
+  providers: [PersonStore, RecordStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
-  platformId = inject(PLATFORM_ID);
   appRef = inject(ApplicationRef);
-  transferState = inject(TransferState);
-  httpClient = inject(HttpClient);
-  queryClient = inject(QueryClient);
-  // personStore = inject(PersonStore);
+  personStore = inject(PersonStore);
+  recordStore = inject(RecordStore);
+  readonly pokemonId = signal(1);
 
-  pokeQuery = injectQuery(() => ({
-    queryKey: ['pokemon'],
-    queryFn: async () => {
-      const pokemon = await lastValueFrom(
-        this.httpClient.get<{ name: string }>('/api/hello'),
-      );
-      return pokemon;
-    },
-  }));
-
-  person = signalState({
-    name: 'vu',
-    age: 10,
+  testEffect = effect(() => {
+    console.log(this.personStore.test()());
   });
 
-  // zz = watchState(this.personStore, (state) => {
-  //   console.log({ name: state.name, age: state.age });
-  // });
-
-  constructor() {
-    if (isPlatformServer(this.platformId)) {
-      this.transferState.onSerialize(stateKey, () =>
-        dehydrate(this.queryClient),
-      );
-    } else {
-      const dehydratedState = this.transferState.get(stateKey, null);
-      hydrate(this.queryClient, dehydratedState);
-    }
-  }
-  // pokeResource = httpResource<{ name: string }>(() => '/api/hello');
   z = this.appRef.isStable.subscribe((stable) => {
     console.log({ stableFromObservable: stable });
   });
@@ -151,14 +131,15 @@ export class App {
     console.log('clicker ends');
   }
 
-  // qqq = afterRenderEffect(() => {
-  //   setInterval(() => {
-  //     this.timer.update((v) => v + 1);
-  //   }, 5000);
-  // });
+  clicker2() {
+    this.personStore.test().update((val) => val + '2');
+  }
 
-  // qq = setInterval(() => {
-  //   this.timer.update((v) => v + 1);
-  //   console.log('timer', this.timer());
-  // }, 5000);
+  clicker3() {
+    console.log('before', getState(this.recordStore));
+    console.log(this.recordStore.test()['nani']);
+    this.recordStore.setTest({ nani: 'what the nani' });
+    console.log('after', getState(this.recordStore));
+    console.log(this.recordStore.test()['nani']);
+  }
 }

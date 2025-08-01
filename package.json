@@ -23,7 +23,7 @@
     "@angular/platform-server": "^20.1.0",
     "@angular/router": "^20.1.0",
     "@angular/ssr": "^20.1.0",
-    "@ngrx/signals": "^19.0.1",
+    "@ngrx/signals": "^20.0.0",
     "@tailwindcss/postcss": "^4.1.11",
     "@tanstack/angular-query-experimental": "5.83.0",
     "express": "^5.1.0",

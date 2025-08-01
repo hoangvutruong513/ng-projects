@@ -24,10 +24,14 @@ const angularApp = new AngularNodeAppEngine();
  * });
  * ```
  */
-app.get('/api/hello', async (req, res) => {
-  const fetchPokemon = await fetch('https://pokeapi.co/api/v2/pokemon/1');
-  const pokemon = (await fetchPokemon.json()) as unknown;
-  res.json(pokemon);
+app.get('/api/hello/:pokemonId', async (req, res) => {
+  const parsedPokemonId = parseInt(req.params.pokemonId);
+  const normalizedPokemonId = isNaN(parsedPokemonId) ? 1 : parsedPokemonId;
+  const fetchPokemon = await fetch(
+    `https://pokeapi.co/api/v2/pokemon/${normalizedPokemonId}`,
+  );
+  const pokemon = (await fetchPokemon.json()) as { name: string };
+  setTimeout(() => res.status(200).json(pokemon), 2000);
 });
 
 /**

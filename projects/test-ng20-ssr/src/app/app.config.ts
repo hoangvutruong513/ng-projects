@@ -1,16 +1,29 @@
+import { isPlatformServer } from '@angular/common';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
   ApplicationConfig,
+  inject,
+  makeStateKey,
+  PLATFORM_ID,
+  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
+  TransferState,
 } from '@angular/core';
 import {
   provideClientHydration,
-  withEventReplay,
+  withIncrementalHydration,
   withNoHttpTransferCache,
 } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
 import {
+  provideRouter,
+  withComponentInputBinding,
+  withRouterConfig,
+} from '@angular/router';
+import {
+  dehydrate,
+  DehydratedState,
+  hydrate,
   provideTanStackQuery,
   QueryClient,
   withDevtools,
@@ -18,24 +31,47 @@ import {
 
 import { routes } from './app.routes';
 
+const stateKey = makeStateKey<DehydratedState>('tsquery');
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideHttpClient(withFetch()),
-    provideRouter(routes),
-    provideClientHydration(withEventReplay(), withNoHttpTransferCache()),
+    provideRouter(
+      routes,
+      withComponentInputBinding(),
+      withRouterConfig({ paramsInheritanceStrategy: 'always' }),
+    ),
+    provideClientHydration(
+      withIncrementalHydration(),
+      withNoHttpTransferCache(),
+    ),
     provideTanStackQuery(
       new QueryClient({
         defaultOptions: {
           queries: {
             refetchOnWindowFocus: false,
             retry: false,
-            staleTime: 1000 * 30, // 5 minutes
           },
         },
       }),
       withDevtools(),
     ),
+    provideAppInitializer(() => {
+      const transferState = inject(TransferState);
+      const queryClient = inject(QueryClient);
+      const platformId = inject(PLATFORM_ID);
+      if (isPlatformServer(platformId)) {
+        transferState.onSerialize(stateKey, () => {
+          const dehydratedState = dehydrate(queryClient);
+          queryClient.clear();
+          return dehydratedState;
+        });
+      } else {
+        const hydrateState = transferState.get(stateKey, null);
+        hydrate(queryClient, hydrateState);
+      }
+    }),
   ],
 };
