@@ -7,7 +7,7 @@ import {
   input,
   numberAttribute,
 } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { fromEvent, lastValueFrom, takeUntil } from 'rxjs';
 
@@ -37,10 +37,8 @@ import { fromEvent, lastValueFrom, takeUntil } from 'rxjs';
 })
 export class PokemonSummary {
   httpClient = inject(HttpClient);
-  router = inject(Router);
-  activatedRoute = inject(ActivatedRoute);
   readonly id = input(1, {
-    transform: (value: unknown) => numberAttribute(value, 1),
+    transform: numberAttribute,
   });
   readonly previousLink = computed(() => {
     const id = this.id();
@@ -65,22 +63,4 @@ export class PokemonSummary {
       staleTime: Infinity,
     };
   });
-
-  async next() {
-    const id = this.id();
-    if (id) {
-      await this.router.navigate(['../', id + 1], {
-        relativeTo: this.activatedRoute,
-      });
-    }
-  }
-
-  async prev() {
-    const id = this.id();
-    if (id) {
-      await this.router.navigate(['../', id === 1 ? 1 : id - 1], {
-        relativeTo: this.activatedRoute,
-      });
-    }
-  }
 }
