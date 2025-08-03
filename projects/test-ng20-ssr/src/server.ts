@@ -34,6 +34,14 @@ app.get('/api/hello/:pokemonId', async (req, res) => {
   setTimeout(() => res.status(200).json(pokemon), 2000);
 });
 
+app.post('/api/login', (req, res) => {
+  res.cookie('fuckyou', 'fuckyou2', {
+    sameSite: 'lax',
+    httpOnly: true,
+  });
+  res.status(200).json('Fucking Cookie Set');
+});
+
 /**
  * Serve static files from /browser
  */

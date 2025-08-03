@@ -1,18 +1,22 @@
-import { PrerenderFallback, RenderMode, ServerRoute } from '@angular/ssr';
+import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
   {
-    path: 'pokemon/:id',
+    path: 'home',
     renderMode: RenderMode.Prerender,
-    getPrerenderParams: async () => {
-      const ids = await Promise.resolve([
-        { id: '1' },
-        { id: '2' },
-        { id: '3' },
-      ]);
-      return ids;
-    },
-    fallback: PrerenderFallback.Server,
+  },
+  {
+    path: 'pokemon/:id',
+    renderMode: RenderMode.Server,
+    // getPrerenderParams: async () => {
+    //   const ids = await Promise.resolve([
+    //     { id: '1' },
+    //     { id: '2' },
+    //     { id: '3' },
+    //   ]);
+    //   return ids;
+    // },
+    // fallback: PrerenderFallback.Server,
   },
   {
     path: '**',

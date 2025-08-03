@@ -15,23 +15,29 @@ import { fromEvent, lastValueFrom, takeUntil } from 'rxjs';
   selector: 'app-pokemon-summary',
   imports: [RouterLink],
   template: `
-    <section
-      class="rounded-md border-2 border-amber-500 bg-green-400 p-2 text-2xl text-black"
-    >
-      <div class="text-base text-violet-500">{{ pokeQuery.data()?.name }}</div>
+    <section class="grid grid-cols-1 justify-items-start gap-2 text-white">
+      <section
+        class="justify-self-stretch rounded-md border-2 border-amber-500 bg-green-400 p-2 text-2xl text-black"
+      >
+        <div class="text-base text-violet-500">
+          {{ pokeQuery.data()?.name }}
+        </div>
+      </section>
+      <section class="flex flex-row gap-2">
+        <a
+          class="cursor-pointer rounded-xl bg-green-400 p-2"
+          [routerLink]="['../', previousLink()]"
+        >
+          Previous Pokemon
+        </a>
+        <a
+          class="cursor-pointer rounded-xl bg-green-400 p-2"
+          [routerLink]="['../', nextLink()]"
+        >
+          Next Pokemon
+        </a>
+      </section>
     </section>
-    <a
-      class="cursor-pointer rounded-xl bg-green-400 p-4"
-      [routerLink]="['../', previousLink()]"
-    >
-      Previous Pokemon
-    </a>
-    <a
-      class="cursor-pointer rounded-xl bg-green-400 p-4"
-      [routerLink]="['../', nextLink()]"
-    >
-      Next Pokemon
-    </a>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

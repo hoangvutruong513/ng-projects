@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -18,6 +19,8 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
+import { injectMutation } from '@tanstack/angular-query-experimental';
+import { lastValueFrom } from 'rxjs';
 
 export const delayAsync = (ms: number) => {
   return new Promise((res) => setTimeout(res, ms));
@@ -56,31 +59,51 @@ const RecordStore = signalStore(
   selector: 'app-root',
   imports: [DatePipe, RouterOutlet],
   template: `
-    <div class="bg-amber-500 text-black">
-      {{ title() }}
-    </div>
-    <div class="bg-amber-800 text-white">{{ timer() }}</div>
-    <button
-      class="cursor-pointer rounded-xl bg-green-400 p-4"
-      (click)="clicker()"
-    >
-      Click
-    </button>
-    <button
-      class="cursor-pointer rounded-xl bg-green-400 p-4"
-      (click)="clicker2()"
-    >
-      Click2
-    </button>
-    <button
-      class="cursor-pointer rounded-xl bg-green-400 p-4"
-      (click)="clicker3()"
-    >
-      Click3
-    </button>
-    <div>{{ getTime() | date: 'medium' }}</div>
-    <section class="border-2 border-purple-400 bg-blue-600 text-white">
-      <router-outlet />
+    <section class="grid grid-cols-1 gap-2">
+      <section class="rounded-lg border-2 border-blue-600 bg-gray-100 p-2">
+        <div class="bg-amber-500 text-black">
+          {{ title() }}
+        </div>
+        <div class="bg-amber-800 text-white">{{ timer() }}</div>
+        <button
+          class="cursor-pointer rounded-xl bg-green-400 p-4"
+          (click)="clicker()"
+        >
+          Click
+        </button>
+        <button
+          class="cursor-pointer rounded-xl bg-green-400 p-4"
+          (click)="clicker2()"
+        >
+          Click2
+        </button>
+        <button
+          class="cursor-pointer rounded-xl bg-green-400 p-4"
+          (click)="clicker3()"
+        >
+          Click3
+        </button>
+        <div>{{ getTime() | date: 'medium' }}</div>
+      </section>
+      <section
+        class="flex flex-row gap-2 rounded-lg border-2 border-blue-600 bg-gray-100 p-2"
+      >
+        <button
+          class="cursor-pointer rounded-xl bg-green-400 p-4"
+          (click)="loginCmd.mutate()"
+        >
+          Login MOFO
+        </button>
+        <button
+          class="cursor-pointer rounded-xl bg-green-400 p-4"
+          (click)="readCookie()"
+        >
+          read cookie
+        </button>
+      </section>
+      <section class="rounded-lg border-2 border-blue-600 bg-gray-100 p-2">
+        <router-outlet />
+      </section>
     </section>
   `,
   providers: [PersonStore, RecordStore],
@@ -90,6 +113,14 @@ export class App {
   appRef = inject(ApplicationRef);
   personStore = inject(PersonStore);
   recordStore = inject(RecordStore);
+  httpClient = inject(HttpClient);
+  loginCmd = injectMutation(() => ({
+    mutationFn: () =>
+      lastValueFrom(this.httpClient.post<string>('/api/login', {})),
+    onSuccess: (data) => {
+      console.log('Logged In!', data);
+    },
+  }));
   readonly pokemonId = signal(1);
 
   testEffect = effect(() => {
@@ -141,5 +172,9 @@ export class App {
     this.recordStore.setTest({ nani: 'what the nani' });
     console.log('after', getState(this.recordStore));
     console.log(this.recordStore.test()['nani']);
+  }
+
+  readCookie() {
+    console.log(document.cookie);
   }
 }
