@@ -88,14 +88,28 @@ const RecordStore = signalStore(
       <section
         class="flex flex-row gap-2 rounded-lg border-2 border-blue-600 bg-gray-100 p-2"
       >
+        <input
+          type="email"
+          class="rounded-md border-2 border-black bg-fuchsia-200 p-2"
+          autocomplete="off"
+          [value]="username()"
+          (input)="onNameInput($event)"
+        />
+        <input
+          type="password"
+          class="rounded-md border-2 border-black bg-fuchsia-200 p-2"
+          autocomplete="off"
+          [value]="password()"
+          (input)="onPasswordInput($event)"
+        />
         <button
-          class="cursor-pointer rounded-xl bg-green-400 p-4"
-          (click)="loginCmd.mutate()"
+          class="cursor-pointer rounded-xl bg-green-400 p-2"
+          (click)="login()"
         >
           Login MOFO
         </button>
         <button
-          class="cursor-pointer rounded-xl bg-green-400 p-4"
+          class="cursor-pointer rounded-xl bg-green-400 p-2"
           (click)="readCookie()"
         >
           read cookie
@@ -114,13 +128,39 @@ export class App {
   personStore = inject(PersonStore);
   recordStore = inject(RecordStore);
   httpClient = inject(HttpClient);
+
   loginCmd = injectMutation(() => ({
-    mutationFn: () =>
-      lastValueFrom(this.httpClient.post<string>('/api/login', {})),
+    mutationFn: (login: { username: string; password: string }) =>
+      lastValueFrom(this.httpClient.post<string>('/api/login', login)),
     onSuccess: (data) => {
       console.log('Logged In!', data);
     },
+    onError: (error) => {
+      console.log('Surprised motherfucker', error);
+    },
   }));
+
+  readonly username = signal('');
+  readonly password = signal('');
+
+  onNameInput(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.username.set(target.value);
+  }
+
+  onPasswordInput(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.password.set(target.value);
+  }
+
+  login() {
+    const loginRequest = {
+      username: this.username(),
+      password: this.password(),
+    };
+    this.loginCmd.mutate(loginRequest);
+  }
+
   readonly pokemonId = signal(1);
 
   testEffect = effect(() => {

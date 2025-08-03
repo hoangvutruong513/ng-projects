@@ -11,6 +11,8 @@ import { RouterLink } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { fromEvent, lastValueFrom, takeUntil } from 'rxjs';
 
+import { CookieService } from '../cookie-service';
+
 @Component({
   selector: 'app-pokemon-summary',
   imports: [RouterLink],
@@ -43,6 +45,10 @@ import { fromEvent, lastValueFrom, takeUntil } from 'rxjs';
 })
 export class PokemonSummary {
   httpClient = inject(HttpClient);
+  cookieService = inject(CookieService);
+  constructor() {
+    console.log(this.cookieService.getRequestCookie());
+  }
   readonly id = input(1, {
     transform: numberAttribute,
   });

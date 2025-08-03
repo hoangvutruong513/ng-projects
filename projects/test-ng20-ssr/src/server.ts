@@ -34,12 +34,23 @@ app.get('/api/hello/:pokemonId', async (req, res) => {
   setTimeout(() => res.status(200).json(pokemon), 2000);
 });
 
-app.post('/api/login', (req, res) => {
-  res.cookie('fuckyou', 'fuckyou2', {
-    sameSite: 'lax',
-    httpOnly: true,
-  });
-  res.status(200).json('Fucking Cookie Set');
+app.post('/api/login', express.json(), (req, res) => {
+  const body = req.body as { username: string; password: string };
+  const username = body.username;
+  const password = body.password;
+  if (username === 'test' && password === 'test') {
+    res.cookie('sexId', 'fuckyou2', {
+      sameSite: 'lax',
+      httpOnly: true,
+    });
+    res.cookie('maxAge', 'fuckme2', {
+      sameSite: 'lax',
+      httpOnly: true,
+    });
+    res.status(200).json({ message: 'Fucking cookie set' });
+  } else {
+    res.status(401).json({ message: 'Fucking not authenticated' });
+  }
 });
 
 /**
