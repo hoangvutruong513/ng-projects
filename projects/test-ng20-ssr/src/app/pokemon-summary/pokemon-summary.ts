@@ -68,7 +68,9 @@ export class PokemonSummary {
         const abort$ = fromEvent(signal, 'abort');
         return lastValueFrom(
           this.httpClient
-            .get<{ name: string }>(`/api/hello/${queryKey[1]}`)
+            .get<{
+              name: string;
+            }>(`https://pokeapi.co/api/v2/pokemon/${queryKey[1]}`)
             .pipe(takeUntil(abort$)),
         );
       },

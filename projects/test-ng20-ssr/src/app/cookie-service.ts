@@ -1,3 +1,4 @@
+import { isPlatformServer } from '@angular/common';
 import {
   inject,
   Injectable,
@@ -14,14 +15,10 @@ export class CookieService {
   request = inject(REQUEST, { optional: true });
   responseInit = inject(RESPONSE_INIT, { optional: true });
 
-  constructor() {
-    console.log({
-      request: this.request,
-      responseInit: this.responseInit,
-    });
-  }
-
   getRequestCookie() {
-    return this.request?.headers.get('cookie') ?? '';
+    if (isPlatformServer(this.platformId)) {
+      return this.request?.headers.get('cookie') ?? '';
+    }
+    return document.cookie;
   }
 }

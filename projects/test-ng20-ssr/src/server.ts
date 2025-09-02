@@ -6,13 +6,48 @@ import {
   isMainModule,
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
+import { RedisStore } from 'connect-redis';
 import express from 'express';
+import session from 'express-session';
+import { createClient } from 'redis';
+
+declare module 'express-session' {
+  interface SessionData {
+    idToken: string;
+    isAuthenticated: boolean;
+  }
+}
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
+const redisClient = createClient({
+  url: 'redis://localhost:6379',
+});
+redisClient.connect().catch((err: unknown) => {
+  console.error(err);
+});
+const redisStore = new RedisStore({
+  client: redisClient,
+  prefix: 'myapp:',
+});
+
+app.use(
+  session({
+    store: redisStore,
+    secret: 'abcd-1234',
+    resave: false,
+    saveUninitialized: false,
+    name: 'sessionId',
+    cookie: {
+      sameSite: 'lax',
+      secure: false,
+      httpOnly: true,
+    },
+  }),
+);
 /**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.
@@ -24,30 +59,20 @@ const angularApp = new AngularNodeAppEngine();
  * });
  * ```
  */
-app.get('/api/hello/:pokemonId', async (req, res) => {
-  const parsedPokemonId = parseInt(req.params.pokemonId);
-  const normalizedPokemonId = isNaN(parsedPokemonId) ? 1 : parsedPokemonId;
-  const fetchPokemon = await fetch(
-    `https://pokeapi.co/api/v2/pokemon/${normalizedPokemonId}`,
-  );
-  const pokemon = (await fetchPokemon.json()) as { name: string };
-  setTimeout(() => res.status(200).json(pokemon), 2000);
-});
-
 app.post('/api/login', express.json(), (req, res) => {
   const body = req.body as { username: string; password: string };
   const username = body.username;
   const password = body.password;
   if (username === 'test' && password === 'test') {
-    res.cookie('sexId', 'fuckyou2', {
+    req.session.idToken = 'hahaha';
+    req.session.cookie.maxAge = 5 * 60 * 1000;
+    res.cookie('idToken', 'hahaha', {
       sameSite: 'lax',
-      httpOnly: true,
+      secure: false,
+      httpOnly: false,
+      maxAge: 5 * 60 * 1000,
     });
-    res.cookie('maxAge', 'fuckme2', {
-      sameSite: 'lax',
-      httpOnly: true,
-    });
-    res.status(200).json({ message: 'Fucking cookie set' });
+    res.status(200).json({ message: 'Fucking authenticated' });
   } else {
     res.status(401).json({ message: 'Fucking not authenticated' });
   }
