@@ -23,12 +23,5 @@
     "strictTemplates": true
   },
   "files": [],
-  "references": [
-    {
-      "path": "./projects/placeholder/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/placeholder/tsconfig.spec.json"
-    }
-  ]
+  "references": []
 }
