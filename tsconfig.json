@@ -23,5 +23,12 @@
     "strictTemplates": true
   },
   "files": [],
-  "references": []
+  "references": [
+    {
+      "path": "./projects/route-reuse-strat/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/route-reuse-strat/tsconfig.spec.json"
+    }
+  ]
 }

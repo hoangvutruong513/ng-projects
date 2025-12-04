@@ -13,7 +13,79 @@
       "inlineStyle": true
     }
   },
-  "projects": {},
+  "projects": {
+    "route-reuse-strat": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/route-reuse-strat",
+      "sourceRoot": "projects/route-reuse-strat/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/route-reuse-strat/src/main.ts",
+            "tsConfig": "projects/route-reuse-strat/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/route-reuse-strat/public"
+              }
+            ],
+            "styles": ["projects/route-reuse-strat/src/styles.css"]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "route-reuse-strat:build:production"
+            },
+            "development": {
+              "buildTarget": "route-reuse-strat:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/route-reuse-strat/**/*.ts",
+              "projects/route-reuse-strat/**/*.html"
+            ],
+            "eslintConfig": "projects/route-reuse-strat/eslint.config.mjs"
+          }
+        }
+      }
+    }
+  },
   "cli": {
     "schematicCollections": ["angular-eslint"],
     "analytics": false
