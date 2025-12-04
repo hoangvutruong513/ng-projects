@@ -1,12 +1,13 @@
 // @ts-check
 import eslint from "@eslint/js";
 import angular from "angular-eslint";
+import { defineConfig } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import unusedImports from "eslint-plugin-unused-imports";
 import tseslint from "typescript-eslint";
 
-export default tseslint.config(
+export default defineConfig([
   { ignores: [".angular/", "dist/"] },
   {
     languageOptions: {
@@ -96,4 +97,4 @@ export default tseslint.config(
     },
   },
   eslintConfigPrettier,
-);
+]);
