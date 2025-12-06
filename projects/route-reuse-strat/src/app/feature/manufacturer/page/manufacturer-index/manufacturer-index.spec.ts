@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrderDetail } from './order-detail';
+import { ManufacturerIndex } from './manufacturer-index';
 
-describe('OrderDetail', () => {
-  let component: OrderDetail;
-  let fixture: ComponentFixture<OrderDetail>;
+describe('ManufacturerIndex', () => {
+  let component: ManufacturerIndex;
+  let fixture: ComponentFixture<ManufacturerIndex>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OrderDetail],
+      imports: [ManufacturerIndex],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(OrderDetail);
+    fixture = TestBed.createComponent(ManufacturerIndex);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

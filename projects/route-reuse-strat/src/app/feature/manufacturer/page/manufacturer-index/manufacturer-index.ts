@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-product-index',
+  selector: 'app-manufacturer-index',
   imports: [RouterOutlet],
   template: `<router-outlet />`,
+  styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductIndex {}
+export class ManufacturerIndex {}

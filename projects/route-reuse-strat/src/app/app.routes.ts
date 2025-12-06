@@ -5,4 +5,8 @@ export const routes: Routes = [
     path: 'product',
     loadChildren: () => import('./feature/product/product.routes'),
   },
+  {
+    path: 'manufacturer',
+    loadChildren: () => import('./feature/manufacturer/manufacturer.routes'),
+  },
 ];
