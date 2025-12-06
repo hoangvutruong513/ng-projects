@@ -1,4 +1,5 @@
 export interface Manufacturer {
+  id: number;
   name: string;
   country: string;
   website: string;
@@ -12,9 +13,10 @@ export function createManufacturer(
   partial?: Partial<Manufacturer>,
 ): Manufacturer {
   return {
-    name: '',
-    country: '',
-    website: '',
+    id: 0,
+    name: 'Whate',
+    country: 'Singapore',
+    website: 'https://www.acme.com',
     email: '',
     phone: '',
     foundedYear: new Date().getFullYear(),
