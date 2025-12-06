@@ -10,10 +10,12 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   imports: [RouterOutlet],
   template: `
-    <div>{{ count() }}</div>
-    <div>{{ doubleCount() }}</div>
-    <button (click)="increment()">Increment</button>
-    <router-outlet />
+    <main>
+      <!-- <div>{{ count() }}</div>
+      <div>{{ doubleCount() }}</div>
+      <button (click)="increment()">Increment</button> -->
+      <router-outlet />
+    </main>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

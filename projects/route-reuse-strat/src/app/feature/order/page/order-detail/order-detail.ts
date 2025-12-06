@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 @Component({
   selector: 'app-order-detail',
   imports: [],
-  templateUrl: './order-detail.html',
+  template: ``,
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
