@@ -14,9 +14,9 @@ export function createManufacturer(
 ): Manufacturer {
   return {
     id: 0,
-    name: 'Whate',
-    country: 'Singapore',
-    website: 'https://www.acme.com',
+    name: '',
+    country: '',
+    website: '',
     email: '',
     phone: '',
     foundedYear: new Date().getFullYear(),

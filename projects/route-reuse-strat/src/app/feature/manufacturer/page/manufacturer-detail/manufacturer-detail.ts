@@ -8,115 +8,122 @@ import { ManufacturerStore } from '../../store/manufacturer.store';
   selector: 'app-manufacturer-detail',
   imports: [Field, JsonPipe],
   template: `
-    <section class="rounded-md bg-white p-2">
-      <h2 class="mb-2 text-lg font-bold">Manufacturer Form</h2>
-      <section class="grid grid-cols-3 gap-2">
-        <div>
-          <label
-            for="manufacturerName"
-            class="block text-sm/6 font-medium text-gray-900"
-            >Manufacturer Name</label
-          >
-          <div class="mt-2">
-            <input
-              id="manufacturerName"
-              type="text"
-              class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              [field]="manufacturerForm.name"
-            />
+    <section class="bg-white p-2 grid grid-cols-1 py-4 gap-4">
+      <section>
+        <h2 class="mb-2 text-lg font-bold">Manufacturer Form</h2>
+        <section class="grid grid-cols-3 gap-2">
+          <div>
+            <label
+              for="manufacturerName"
+              class="block text-sm/6 font-medium text-gray-900"
+              >Manufacturer Name</label
+            >
+            <div class="mt-2">
+              <input
+                id="manufacturerName"
+                type="text"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                [field]="manufacturerForm.name"
+              />
+            </div>
           </div>
-        </div>
-        <div>
-          <label
-            for="manufacturerCountry"
-            class="block text-sm/6 font-medium text-gray-900"
-            >Country</label
-          >
-          <div class="mt-2">
-            <input
-              id="manufacturerCountry"
-              type="text"
-              class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              [field]="manufacturerForm.country"
-            />
+          <div>
+            <label
+              for="manufacturerCountry"
+              class="block text-sm/6 font-medium text-gray-900"
+              >Country</label
+            >
+            <div class="mt-2">
+              <input
+                id="manufacturerCountry"
+                type="text"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                [field]="manufacturerForm.country"
+              />
+            </div>
           </div>
-        </div>
-        <div>
-          <label
-            for="manufacturerWebsite"
-            class="block text-sm/6 font-medium text-gray-900"
-            >Website</label
-          >
-          <div class="mt-2">
-            <input
-              id="manufacturerWebsite"
-              type="text"
-              class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              [field]="manufacturerForm.website"
-            />
+          <div>
+            <label
+              for="manufacturerWebsite"
+              class="block text-sm/6 font-medium text-gray-900"
+              >Website</label
+            >
+            <div class="mt-2">
+              <input
+                id="manufacturerWebsite"
+                type="text"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                [field]="manufacturerForm.website"
+              />
+            </div>
           </div>
-        </div>
-        <div>
-          <label
-            for="manufacturerEmail"
-            class="block text-sm/6 font-medium text-gray-900"
-            >Email</label
-          >
-          <div class="mt-2">
-            <input
-              id="manufacturerEmail"
-              type="email"
-              class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              [field]="manufacturerForm.email"
-            />
+          <div>
+            <label
+              for="manufacturerEmail"
+              class="block text-sm/6 font-medium text-gray-900"
+              >Email</label
+            >
+            <div class="mt-2">
+              <input
+                id="manufacturerEmail"
+                type="email"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                [field]="manufacturerForm.email"
+              />
+            </div>
           </div>
-        </div>
-        <div>
-          <label
-            for="manufacturerPhone"
-            class="block text-sm/6 font-medium text-gray-900"
-            >Phone</label
-          >
-          <div class="mt-2">
-            <input
-              id="manufacturerPhone"
-              type="tel"
-              class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              [field]="manufacturerForm.phone"
-            />
+          <div>
+            <label
+              for="manufacturerPhone"
+              class="block text-sm/6 font-medium text-gray-900"
+              >Phone</label
+            >
+            <div class="mt-2">
+              <input
+                id="manufacturerPhone"
+                type="tel"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                [field]="manufacturerForm.phone"
+              />
+            </div>
           </div>
-        </div>
-        <div>
-          <label
-            for="manufacturerFoundedYear"
-            class="block text-sm/6 font-medium text-gray-900"
-            >Founded Year</label
-          >
-          <div class="mt-2">
-            <input
-              id="manufacturerFoundedYear"
-              type="number"
-              class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              [field]="manufacturerForm.foundedYear"
-            />
+          <div>
+            <label
+              for="manufacturerFoundedYear"
+              class="block text-sm/6 font-medium text-gray-900"
+              >Founded Year</label
+            >
+            <div class="mt-2">
+              <input
+                id="manufacturerFoundedYear"
+                type="number"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                [field]="manufacturerForm.foundedYear"
+              />
+            </div>
           </div>
-        </div>
-        <div class="col-span-3">
-          <label
-            for="manufacturerDescription"
-            class="block text-sm/6 font-medium text-gray-900"
-            >Description</label
-          >
-          <div class="mt-2">
-            <textarea
-              id="manufacturerDescription"
-              rows="3"
-              class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              [field]="manufacturerForm.description"
-            ></textarea>
+          <div class="col-span-3">
+            <label
+              for="manufacturerDescription"
+              class="block text-sm/6 font-medium text-gray-900"
+              >Description</label
+            >
+            <div class="mt-2">
+              <textarea
+                id="manufacturerDescription"
+                rows="3"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                [field]="manufacturerForm.description"
+              ></textarea>
+            </div>
           </div>
-        </div>
+        </section>
       </section>
+      <button
+        class="justify-self-end bg-blue-400 px-2 py-1 rounded-md hover:bg-blue-600 text-white cursor-pointer"
+      >
+        Save
+      </button>
     </section>
     <pre>
       {{ manufacturerModel() | json }}
