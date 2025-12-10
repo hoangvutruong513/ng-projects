@@ -84,6 +84,82 @@
           }
         }
       }
+    },
+    "test-ssr": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/test-ssr",
+      "sourceRoot": "projects/test-ssr/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/test-ssr/src/main.ts",
+            "tsConfig": "projects/test-ssr/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/test-ssr/public"
+              }
+            ],
+            "styles": ["projects/test-ssr/src/styles.css"],
+            "server": "projects/test-ssr/src/main.server.ts",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "projects/test-ssr/src/server.ts"
+            }
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "test-ssr:build:production"
+            },
+            "development": {
+              "buildTarget": "test-ssr:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/test-ssr/**/*.ts",
+              "projects/test-ssr/**/*.html"
+            ],
+            "eslintConfig": "projects/test-ssr/eslint.config.mjs"
+          }
+        }
+      }
     }
   },
   "cli": {

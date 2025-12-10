@@ -29,6 +29,12 @@
     },
     {
       "path": "./projects/route-reuse-strat/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/test-ssr/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/test-ssr/tsconfig.spec.json"
     }
   ]
 }

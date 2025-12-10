@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "serve:ssr:test-ssr": "node dist/test-ssr/server/server.mjs"
   },
   "private": true,
   "dependencies": {
