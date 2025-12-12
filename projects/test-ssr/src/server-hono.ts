@@ -20,7 +20,9 @@ app.get('/api/', (c) => {
   return c.text('Hello from Hono!');
 });
 
-app.use('*', serveStatic({ root: browserDistFolder }));
+if (isMainModule(import.meta.url)) {
+  app.use('*', serveStatic({ root: browserDistFolder }));
+}
 
 app.get('*', async (c) => {
   // Create a fresh Request to avoid private member access issues
@@ -32,7 +34,7 @@ app.get('*', async (c) => {
   if (res) {
     return res;
   } else {
-    console.log('No Angular Route matched to serve');
+    console.log('No Angular Route matched to serve', req.url);
     return c.text('Not found', 404);
   }
 });
