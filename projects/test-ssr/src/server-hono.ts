@@ -24,7 +24,7 @@ if (isMainModule(import.meta.url)) {
   app.use('*', serveStatic({ root: browserDistFolder }));
 }
 
-app.get('*', async (c) => {
+app.use(async (c) => {
   // Create a fresh Request to avoid private member access issues
   const req = new Request(c.req.url, {
     method: c.req.method,
