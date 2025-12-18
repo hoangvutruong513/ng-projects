@@ -14,7 +14,7 @@ const apiApp = new H3();
 const angularAppEngine = new AngularAppEngine();
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
-apiApp.get('', (event) => {
+apiApp.get('/', (event) => {
   console.log('event.url in apiApp', event.url);
   console.log('event.req.url in apiApp', event.req.url);
   return { message: `Hello from H3 API!` };

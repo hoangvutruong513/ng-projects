@@ -16,8 +16,8 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 const app = new Hono();
 const angularAppEngine = new AngularAppEngine();
 
-app.get('/api/', (c) => {
-  return c.text('Hello from Hono!');
+app.get('/api', (c) => {
+  return c.json({ message: 'Hello from Hono!' });
 });
 
 if (isMainModule(import.meta.url)) {
