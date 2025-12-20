@@ -71,7 +71,14 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "providersFile": "test-providers.ts",
+            "setupFiles": ["test-setup.ts"],
+            "runnerConfig": "vitest.config.ts",
+            "reporters": ["html", "default"],
+            "coverageReporters": ["text-summary", "html"]
+          }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
