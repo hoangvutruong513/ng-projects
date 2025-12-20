@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { screen } from '@testing-library/dom';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { App } from './app';
 
@@ -18,9 +20,7 @@ describe('App', () => {
   it('should render title', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Hello, test-ssr',
-    );
+    const a = screen.getByText('Hello, test-ssr');
+    expect(a).toBeInTheDocument();
   });
 });

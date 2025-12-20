@@ -4,7 +4,12 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
-    "types": ["vitest/globals"]
+    "types": ["@testing-library/jest-dom"]
   },
+  "files": [
+    "../../vitest.config.ts",
+    "../../test-setup.ts",
+    "../../test-providers.ts"
+  ],
   "include": ["src/**/*.d.ts", "src/**/*.spec.ts"]
 }
