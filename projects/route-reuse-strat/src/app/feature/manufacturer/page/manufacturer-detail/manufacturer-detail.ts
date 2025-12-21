@@ -1,12 +1,14 @@
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Field } from '@angular/forms/signals';
+import { Components } from 'components';
+import { Button } from 'components/button';
 
 import { ManufacturerStore } from '../../store/manufacturer.store';
 
 @Component({
   selector: 'app-manufacturer-detail',
-  imports: [Field, JsonPipe],
+  imports: [Field, JsonPipe, Button, Components],
   template: `
     <section class="bg-white p-2 grid grid-cols-1 py-4 gap-4">
       <section>
@@ -129,6 +131,10 @@ import { ManufacturerStore } from '../../store/manufacturer.store';
       {{ manufacturerModel() | json }}
     </pre
     >
+    <section>
+      <lib-button>Lib Button Component</lib-button>
+      <lib-components />
+    </section>
   `,
   providers: [ManufacturerStore],
   changeDetection: ChangeDetectionStrategy.OnPush,

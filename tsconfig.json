@@ -4,7 +4,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "components": ["./dist/components"]
+      "components": ["./dist/components"],
+      "components/*": ["./dist/components/*"]
     },
     "strict": true,
     "noImplicitOverride": true,

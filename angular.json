@@ -180,7 +180,7 @@
     "components": {
       "projectType": "library",
       "root": "projects/components",
-      "sourceRoot": "projects/components/src",
+      "sourceRoot": "projects/components",
       "prefix": "lib",
       "architect": {
         "build": {
