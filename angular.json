@@ -73,6 +73,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
+            "tsConfig": "projects/route-reuse-strat/tsconfig.spec.json",
             "providersFile": "test-providers.ts",
             "setupFiles": ["test-setup.ts"],
             "runnerConfig": "vitest.config.ts",
@@ -156,6 +157,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
+            "tsConfig": "projects/test-ssr/tsconfig.spec.json",
             "providersFile": "test-providers.ts",
             "setupFiles": ["test-setup.ts"],
             "runnerConfig": "vitest.config.ts",
@@ -171,6 +173,47 @@
               "projects/test-ssr/**/*.html"
             ],
             "eslintConfig": "projects/test-ssr/eslint.config.mjs"
+          }
+        }
+      }
+    },
+    "components": {
+      "projectType": "library",
+      "root": "projects/components",
+      "sourceRoot": "projects/components/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/components/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/components/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/components/tsconfig.spec.json",
+            "providersFile": "test-providers.ts",
+            "setupFiles": ["test-setup.ts"],
+            "runnerConfig": "vitest.config.ts",
+            "reporters": ["html", "default"],
+            "coverageReporters": ["text-summary", "html"]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/components/**/*.ts",
+              "projects/components/**/*.html"
+            ],
+            "eslintConfig": "projects/components/eslint.config.mjs"
           }
         }
       }
