@@ -1,147 +1,124 @@
 import { JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Field } from '@angular/forms/signals';
-import { Components } from 'components';
-import { Button } from 'components/button';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  linkedSignal,
+  resource,
+  signal,
+  untracked,
+} from '@angular/core';
+import {
+  Field,
+  form,
+  required,
+  SchemaPath,
+  SchemaPathTree,
+  validate,
+} from '@angular/forms/signals';
 
+import { createManufacturer, Manufacturer } from '../../model/manufacturer';
 import { ManufacturerStore } from '../../store/manufacturer.store';
+
+const countryValidation = (field: SchemaPath<string>, country: string[]) => {
+  validate(field, (context) => {
+    if (!country.includes(context.value())) {
+      return {
+        kind: 'countryValidation',
+        message: `Country must be one of ${country.join(', ')}`,
+      };
+    }
+    return null;
+  });
+};
+
+const countryFoundedYearValidation = (
+  schema: SchemaPathTree<Manufacturer>,
+  year: number,
+) => {
+  validate(schema.foundedYear, (ctx) => {
+    const currentFoundedYear = ctx.value();
+    const country = ctx.valueOf(schema.country);
+    if (country === 'Vietnam' && currentFoundedYear < year) {
+      return {
+        kind: 'foundedYearValidation',
+        message: `Founded year must be from ${year} onwards for Vietnam manufacturers`,
+      };
+    }
+    return null;
+  });
+};
+
+const loadManufacturer = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(
+        createManufacturer({
+          name: 'Acme Corp',
+          country: 'Vietnam',
+          website: 'https://www.acmecorp.com',
+          email: '',
+          phone: '+84123456789',
+        }),
+      );
+    }, 2000);
+  }) as Promise<Manufacturer>;
+};
 
 @Component({
   selector: 'app-manufacturer-detail',
-  imports: [Field, JsonPipe, Button, Components],
-  template: `
-    <section class="bg-white p-2 grid grid-cols-1 py-4 gap-4">
-      <section>
-        <h2 class="mb-2 text-lg font-bold">Manufacturer Form</h2>
-        <section class="grid grid-cols-3 gap-2">
-          <div>
-            <label
-              for="manufacturerName"
-              class="block text-sm/6 font-medium text-gray-900"
-              >Manufacturer Name</label
-            >
-            <div class="mt-2">
-              <input
-                id="manufacturerName"
-                type="text"
-                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                [field]="manufacturerForm.name"
-              />
-            </div>
-          </div>
-          <div>
-            <label
-              for="manufacturerCountry"
-              class="block text-sm/6 font-medium text-gray-900"
-              >Country</label
-            >
-            <div class="mt-2">
-              <input
-                id="manufacturerCountry"
-                type="text"
-                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                [field]="manufacturerForm.country"
-              />
-            </div>
-          </div>
-          <div>
-            <label
-              for="manufacturerWebsite"
-              class="block text-sm/6 font-medium text-gray-900"
-              >Website</label
-            >
-            <div class="mt-2">
-              <input
-                id="manufacturerWebsite"
-                type="text"
-                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                [field]="manufacturerForm.website"
-              />
-            </div>
-          </div>
-          <div>
-            <label
-              for="manufacturerEmail"
-              class="block text-sm/6 font-medium text-gray-900"
-              >Email</label
-            >
-            <div class="mt-2">
-              <input
-                id="manufacturerEmail"
-                type="email"
-                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                [field]="manufacturerForm.email"
-              />
-            </div>
-          </div>
-          <div>
-            <label
-              for="manufacturerPhone"
-              class="block text-sm/6 font-medium text-gray-900"
-              >Phone</label
-            >
-            <div class="mt-2">
-              <input
-                id="manufacturerPhone"
-                type="tel"
-                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                [field]="manufacturerForm.phone"
-              />
-            </div>
-          </div>
-          <div>
-            <label
-              for="manufacturerFoundedYear"
-              class="block text-sm/6 font-medium text-gray-900"
-              >Founded Year</label
-            >
-            <div class="mt-2">
-              <input
-                id="manufacturerFoundedYear"
-                type="number"
-                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                [field]="manufacturerForm.foundedYear"
-              />
-            </div>
-          </div>
-          <div class="col-span-3">
-            <label
-              for="manufacturerDescription"
-              class="block text-sm/6 font-medium text-gray-900"
-              >Description</label
-            >
-            <div class="mt-2">
-              <textarea
-                id="manufacturerDescription"
-                rows="3"
-                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                [field]="manufacturerForm.description"
-              ></textarea>
-            </div>
-          </div>
-        </section>
-      </section>
-      <button
-        class="justify-self-end bg-blue-400 px-2 py-1 rounded-md hover:bg-blue-600 text-white cursor-pointer"
-      >
-        Save
-      </button>
-    </section>
-    <pre>
-      {{ manufacturerModel() | json }}
-    </pre
-    >
-    <section>
-      <lib-button>Lib Button Component</lib-button>
-      <lib-components />
-    </section>
-  `,
+  imports: [Field, JsonPipe],
+  templateUrl: './manufacturer-detail.html',
   providers: [ManufacturerStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManufacturerDetail {
-  manufacturerStore = inject(ManufacturerStore);
+  // manufacturerStore = inject(ManufacturerStore);
 
-  manufacturerModel = this.manufacturerStore.manufacturerModel;
-  manufacturerForm = this.manufacturerStore.manufacturerForm;
+  // manufacturerModel = this.manufacturerStore.manufacturerModel;
+  // manufacturerForm = this.manufacturerStore.manufacturerForm;
+
+  manufacturerResource = resource({
+    loader: () => loadManufacturer(),
+  });
+
+  readonly manufacturerModel = linkedSignal(() => {
+    const apiManufacturer = this.manufacturerResource.value();
+    if (!apiManufacturer) {
+      return createManufacturer();
+    }
+    return apiManufacturer;
+  });
+
+  manufacturerForm = form(this.manufacturerModel, (schema) => {
+    // readonly(schema);
+    // readonly(schema.email, () => false);
+    required(schema.email, { message: 'This field is required' });
+    countryValidation(schema.country, ['Singapore', 'Vietnam', 'USA']);
+    countryFoundedYearValidation(schema, 2005);
+  });
+
+  readonly newReview = signal('');
+
+  patchForm() {
+    this.manufacturerModel.set(
+      createManufacturer({
+        reviews: ['First Review', 'Second Review', 'Third Review'],
+      }),
+    );
+  }
+
+  addReview() {
+    this.manufacturerForm
+      .reviews()
+      .value.update((current) => [...current, this.newReview()]);
+  }
+
+  a = effect(() => {
+    const country = this.manufacturerForm.country().value();
+    untracked(() => {
+      if (country === 'Vietnam') this.manufacturerForm.phone().value.set('+84');
+    });
+  });
 }

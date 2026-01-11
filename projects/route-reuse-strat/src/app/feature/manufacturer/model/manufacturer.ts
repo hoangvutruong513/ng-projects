@@ -7,6 +7,7 @@ export interface Manufacturer {
   phone: string;
   foundedYear: number;
   description: string;
+  reviews: string[];
 }
 
 export function createManufacturer(
@@ -21,6 +22,7 @@ export function createManufacturer(
     phone: '',
     foundedYear: new Date().getFullYear(),
     description: '',
+    reviews: ['First Review'],
     ...partial,
   };
 }
