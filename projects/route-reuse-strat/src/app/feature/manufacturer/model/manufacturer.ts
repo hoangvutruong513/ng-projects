@@ -1,3 +1,11 @@
+// export interface Address {
+//   country: string;
+//   city: string;
+//   zipCode: string;
+//   line1: string;
+//   line2: string;
+//   line3: string;
+// }
 export interface Manufacturer {
   id: number;
   name: string;
@@ -5,9 +13,10 @@ export interface Manufacturer {
   website: string;
   email: string;
   phone: string;
-  foundedYear: number;
+  foundedYear: number | null;
   description: string;
-  reviews: string[];
+  isClosed: boolean;
+  closedYear: number | null;
 }
 
 export function createManufacturer(
@@ -20,9 +29,10 @@ export function createManufacturer(
     website: '',
     email: '',
     phone: '',
-    foundedYear: new Date().getFullYear(),
+    foundedYear: null,
     description: '',
-    reviews: ['First Review'],
+    isClosed: false,
+    closedYear: null,
     ...partial,
   };
 }

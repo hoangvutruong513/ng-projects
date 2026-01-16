@@ -2,20 +2,21 @@ import { JsonPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   linkedSignal,
   resource,
   signal,
-  untracked,
 } from '@angular/core';
 import {
+  applyWhen,
   Field,
   form,
   required,
+  schema,
   SchemaPath,
-  SchemaPathTree,
   validate,
+  validateTree,
 } from '@angular/forms/signals';
+import { explicitEffect } from 'components';
 
 import { createManufacturer, Manufacturer } from '../../model/manufacturer';
 import { ManufacturerStore } from '../../store/manufacturer.store';
@@ -32,22 +33,37 @@ const countryValidation = (field: SchemaPath<string>, country: string[]) => {
   });
 };
 
-const countryFoundedYearValidation = (
-  schema: SchemaPathTree<Manufacturer>,
-  year: number,
-) => {
-  validate(schema.foundedYear, (ctx) => {
-    const currentFoundedYear = ctx.value();
-    const country = ctx.valueOf(schema.country);
-    if (country === 'Vietnam' && currentFoundedYear < year) {
+const closedYearValidation = schema<Manufacturer>((schema) => {
+  required(schema.closedYear, {
+    message: 'Closed year is required if manufacturer is closed',
+  });
+  validateTree(schema, (ctx) => {
+    const closedYear = ctx.fieldTree.closedYear().value();
+    const foundedYear = ctx.fieldTree.foundedYear().value();
+    if (foundedYear === null || closedYear === null) {
+      return null;
+    }
+    if (closedYear <= foundedYear) {
       return {
-        kind: 'foundedYearValidation',
-        message: `Founded year must be from ${year} onwards for Vietnam manufacturers`,
+        kind: 'closedYearValidation',
+        fieldTree: ctx.fieldTree.closedYear,
+        message: `Closed year must be after founded year`,
       };
     }
     return null;
   });
-};
+});
+
+const manufacturerSchema = schema<Manufacturer>((schema) => {
+  required(schema.name, { message: 'This field is required' });
+  required(schema.email, { message: 'This field is required' });
+  countryValidation(schema.country, ['Singapore', 'Vietnam', 'USA']);
+  applyWhen(
+    schema,
+    (ctx) => ctx.valueOf(schema.isClosed),
+    closedYearValidation,
+  );
+});
 
 const loadManufacturer = () => {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -68,7 +84,7 @@ const loadManufacturer = () => {
 
 @Component({
   selector: 'app-manufacturer-detail',
-  imports: [Field, JsonPipe],
+  imports: [JsonPipe, Field],
   templateUrl: './manufacturer-detail.html',
   providers: [ManufacturerStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -91,34 +107,19 @@ export class ManufacturerDetail {
     return apiManufacturer;
   });
 
-  manufacturerForm = form(this.manufacturerModel, (schema) => {
-    // readonly(schema);
-    // readonly(schema.email, () => false);
-    required(schema.email, { message: 'This field is required' });
-    countryValidation(schema.country, ['Singapore', 'Vietnam', 'USA']);
-    countryFoundedYearValidation(schema, 2005);
-  });
+  manufacturerForm = form(this.manufacturerModel, manufacturerSchema);
 
   readonly newReview = signal('');
 
   patchForm() {
-    this.manufacturerModel.set(
-      createManufacturer({
-        reviews: ['First Review', 'Second Review', 'Third Review'],
-      }),
-    );
+    this.manufacturerModel.set(createManufacturer());
   }
 
-  addReview() {
-    this.manufacturerForm
-      .reviews()
-      .value.update((current) => [...current, this.newReview()]);
-  }
+  a = explicitEffect([this.manufacturerForm.country().value], ([country]) => {
+    if (country === 'Vietnam') this.manufacturerForm.phone().value.set('+84');
+  });
 
-  a = effect(() => {
-    const country = this.manufacturerForm.country().value();
-    untracked(() => {
-      if (country === 'Vietnam') this.manufacturerForm.phone().value.set('+84');
-    });
+  b = explicitEffect([this.manufacturerForm.country().value], ([country]) => {
+    console.log({ country });
   });
 }
