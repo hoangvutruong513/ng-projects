@@ -3,13 +3,14 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "../../out-tsc/spec",
     "types": ["@testing-library/jest-dom"]
   },
   "files": [
-    "../../vitest.config.ts",
-    "../../test-setup.ts",
-    "../../test-providers.ts"
+    "src/vitest.config.ts",
+    "src/test-setup.ts",
+    "src/test-providers.ts"
   ],
   "include": ["src/**/*.d.ts", "src/**/*.spec.ts"]
 }

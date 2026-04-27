@@ -6,20 +6,24 @@ import {
   untracked,
 } from '@angular/core';
 
-export const explicitEffect = <const T extends readonly Signal<unknown>[]>(
+type SignalTuple = readonly [...Signal<unknown>[]];
+type UnwrapSignalTuple<T extends SignalTuple> = {
+  [K in keyof T]: T[K] extends Signal<infer U> ? U : never;
+};
+
+export const explicitEffect = <const T extends SignalTuple>(
   deps: T,
   effectFn: (
-    args: { [K in keyof T]: ReturnType<T[K]> },
+    args: UnwrapSignalTuple<T>,
     onCleanup: EffectCleanupRegisterFn,
   ) => void,
-  isEnabled = signal(true),
+  isEnabled = true,
 ) => {
+  const isEnabledSignal = signal(isEnabled);
   const effectRef = effect((onCleanup) => {
-    const depArr = deps.map((dep) => dep()) as {
-      [K in keyof T]: ReturnType<T[K]>;
-    };
+    const depArr = deps.map((dep) => dep()) as UnwrapSignalTuple<T>;
     untracked(() => {
-      if (isEnabled()) {
+      if (isEnabledSignal()) {
         effectFn(depArr, onCleanup);
       }
     });
@@ -27,13 +31,13 @@ export const explicitEffect = <const T extends readonly Signal<unknown>[]>(
   return {
     effectRef,
     enable: () => {
-      isEnabled.set(true);
+      isEnabledSignal.set(true);
     },
     disable: () => {
-      isEnabled.set(false);
+      isEnabledSignal.set(false);
     },
     toggle: () => {
-      isEnabled.update((v) => !v);
+      isEnabledSignal.update((v) => !v);
     },
   };
 };

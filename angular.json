@@ -158,9 +158,9 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/test-ssr/tsconfig.spec.json",
-            "providersFile": "test-providers.ts",
-            "setupFiles": ["test-setup.ts"],
-            "runnerConfig": "vitest.config.ts",
+            "providersFile": "projects/test-ssr/src/test-providers.ts",
+            "setupFiles": ["projects/test-ssr/src/test-setup.ts"],
+            "runnerConfig": "projects/test-ssr/src/vitest.config.ts",
             "reporters": ["html", "default"],
             "coverageReporters": ["text-summary", "html"]
           }
