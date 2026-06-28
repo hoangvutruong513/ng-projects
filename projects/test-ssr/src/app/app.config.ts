@@ -1,4 +1,8 @@
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
@@ -6,6 +10,7 @@ import {
 import {
   provideClientHydration,
   withEventReplay,
+  withNoHttpTransferCache,
 } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 
@@ -15,7 +20,15 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withFetch()),
-    provideClientHydration(withEventReplay()),
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([
+        (req, next) => {
+          const reqWithCredentials = req.clone({ credentials: 'include' });
+          return next(reqWithCredentials);
+        },
+      ]),
+    ),
+    provideClientHydration(withEventReplay(), withNoHttpTransferCache()),
   ],
 };
