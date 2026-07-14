@@ -39,7 +39,6 @@ export default defineConfig([
         },
       ],
       "@angular-eslint/no-async-lifecycle-method": "error",
-      "@angular-eslint/no-conflicting-lifecycle": "error",
       "@angular-eslint/no-lifecycle-call": "error",
       "@angular-eslint/no-empty-lifecycle-method": "error",
       "@angular-eslint/no-duplicates-in-metadata-arrays": "error",

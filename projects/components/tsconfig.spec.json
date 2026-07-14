@@ -8,13 +8,5 @@
     "types": ["@testing-library/jest-dom"]
   },
   "files": ["vitest.config.ts", "test-setup.ts", "test-providers.ts"],
-  "include": ["**/*.d.ts", "**/*.spec.ts"],
-  "angularCompilerOptions": {
-    "extendedDiagnostics": {
-      "checks": {
-        "nullishCoalescingNotNullable": "suppress",
-        "optionalChainNotNullable": "suppress"
-      }
-    }
-  }
+  "include": ["**/*.d.ts", "**/*.spec.ts"]
 }

@@ -12,13 +12,5 @@
     "src/vitest.config.ts",
     "src/test-setup.ts",
     "src/test-providers.ts"
-  ],
-  "angularCompilerOptions": {
-    "extendedDiagnostics": {
-      "checks": {
-        "nullishCoalescingNotNullable": "suppress",
-        "optionalChainNotNullable": "suppress"
-      }
-    }
-  }
+  ]
 }
